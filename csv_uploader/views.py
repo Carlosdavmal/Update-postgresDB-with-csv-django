@@ -3,6 +3,7 @@ from django.shortcuts import render
 from .forms import RowFill
 from .models import Row
 from django.contrib import messages
+import pandas as pd
 
 
 
@@ -51,17 +52,74 @@ def csv_upload(request):
         messages.error(request, 'this is not a csv file')
 
     data_set = csv_file.read().decode('UTF-8')
-    print(data_set)
+    #print(data_set)
     io_string = io.StringIO(data_set)
     next(io_string)
-    print(io_string)
-    for column in csv.reader(io_string, delimiter=',', quotechar='|'):
+    #print(io_string)
+    #banned=["0","1","2","3","4","5","6","7","8","9"]
+    #
+
+    #arreglar rise error, detener ejecución peron print
+    for column in csv.reader(io_string, delimiter=',', quotechar='|'):       
+       
+        if len(column[0]) > 20:
+            messages.error(request, 'Maximo 20 caracteres')   
+            break  
+        if  column[0].isdigit():
+            messages.error(request, 'Dataset no puede contener numeros')
+            break   
+
+        if len(column[1]) > 20:
+            messages.error(request, 'Maximo 20 caracteres') 
+            break       
+        if  column[1].isdigit():
+            messages.error(request, 'point no puede contener numeros')
+            break
+
+        if len(column[2]) > 20:
+            messages.error(request, 'Maximo 20 caracteres')  
+            break      
+        if  column[2].isalpha():
+            messages.error(request, 'client_id no puede contener letras')
+            break
+
+        if len(column[3]) > 45:
+            messages.error(request, 'Maximo 45 caracteres') 
+            break       
+        if  column[3].isdigit():
+            messages.error(request, 'client_name no puede contener numeros')
+            break
+
         _, created = Row.objects.update_or_create(      
             dataset = column[0],
             point = column[1],
             client_id = column[2],
-            client_name = column[3]
+            client_name = column[3] 
         )
-    
     context = {}
     return render(request, template, context)
+        
+        
+
+    #for column in csv.reader(io_string, delimiter=',', quotechar='|'):
+    #    _, created = Row.objects.update_or_create(      
+    #        dataset = column[0],
+    #        point = column[1],
+    #        client_id = column[2],
+    #        client_name = column[3]
+    #   )
+    
+    #context = {}
+    #return render(request, template, context)
+
+def db_info_view(request):
+    obj = Row.objects.get(id=1)
+    context = {
+        'dataset'
+        'point'
+        'client_id'
+        'client_name'
+
+    }
+
+    return render(request, "info_view.html")
