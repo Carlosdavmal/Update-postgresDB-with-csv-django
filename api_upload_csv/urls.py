@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from csv_uploader.views import row, csv_upload
+from csv_uploader.views import row, csv_upload, index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('csv_form/', row, name='row'),
     path('csv_uploader/', csv_upload, name="csv_uploader"), 
+    path('', index)
     #path('api-auth/', include('rest_framework.urls'))
 ]

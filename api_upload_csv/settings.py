@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'csv_uploader',
+    
 ]
 
 MIDDLEWARE = [
@@ -78,9 +79,9 @@ WSGI_APPLICATION = 'api_upload_csv.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'csvupdater',
+        'NAME': 'csv1',
         'USER': 'postgres',
-        'PASSWORD': '',
+        'PASSWORD': 'radamantiss1',
         'HOST':'127.0.0.1',
         'DATABASE_PORT': '5050',
     }
